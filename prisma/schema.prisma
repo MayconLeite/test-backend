@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -12,27 +12,26 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String  @unique
-  password  String
-  rented Rented?
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  email    String   @unique
+  password String
+  Rented   Rented[]
 }
 
 model Book {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  title String  
-  author  String
-  category String
-  rented Rented?
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  author        String
+  category      String
+  bookingStatus Boolean? @default(false)
+  Rented        Rented[]
 }
 
 model Rented {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  user User @relation(fields: [userId], references: [id])
-  userId String @unique @db.ObjectId
-  book  Book @relation(fields: [bookId], references: [id])
-  bookId String @unique @db.ObjectId
-  booking DateTime @default(now())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+  book       Book     @relation(fields: [bookId], references: [id])
+  bookId     String   @db.ObjectId
   devolution DateTime @updatedAt
-  status String
 }

@@ -6,3 +6,15 @@ export const createRented = async data => {
   });
   return rented;
 };
+
+export const devolutionRented = async (id, bookingStatus) => {
+  const rented = await prisma.book.update({
+    where: {
+      id,
+    },
+    data: {
+      bookingStatus,
+    },
+  });
+  return rented;
+};

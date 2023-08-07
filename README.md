@@ -1,3 +1,9 @@
-# Teste Back-End Nodejs
+## Configurar variáveis ambiente
 
-Criação API locação de livros
+.env.example
+
+## Instalar dependências, subir o MongoDB e iniciar projeto
+
+- npm install
+- docker-compose -up -d
+- npm start

@@ -5,6 +5,7 @@ import {
   updateBook,
   deleteBook,
 } from '../repositorys/book.repository';
+import { prisma } from '../services/prisma';
 import { bookValidation } from '../validations/book.validation';
 
 export const create = async (req, res) => {
@@ -37,6 +38,18 @@ export const getBookById = async (req, res) => {
 };
 
 export const update = async (req, res) => {
+  const [bookExists] = await prisma.book.findMany({
+    where: {
+      id: req.params.id,
+    },
+  });
+
+  if (bookExists.bookingStatus === true) {
+    return res
+      .status(400)
+      .json({ error: 'Livro está alugado, não é possível editar' });
+  }
+
   try {
     const bookById = await updateBook(req.params.id, req.body);
     res.status(200).send(bookById);
@@ -46,6 +59,17 @@ export const update = async (req, res) => {
 };
 
 export const bookDelete = async (req, res) => {
+  const [bookExists] = await prisma.book.findMany({
+    where: {
+      id: req.params.id,
+    },
+  });
+
+  if (bookExists.bookingStatus === true) {
+    return res
+      .status(400)
+      .json({ error: 'Livro está alugado, não é possível deletar' });
+  }
   try {
     await deleteBook(req.params.id);
     res.status(200).send();
